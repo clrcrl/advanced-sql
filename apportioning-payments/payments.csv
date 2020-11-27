@@ -1,0 +1,16 @@
+payment_id,task_id,payment_type,amount
+1,1,inbound,50
+2,1,payout,50
+3,2,inbound,30
+4,2,refund,30
+5,3,inbound,40
+6,3,inbound,20
+7,3,payout,60
+8,4,inbound,20
+9,4,payout,15
+10,4,refund,5
+11,5,inbound,20
+12,5,inbound,40
+13,5,inbound,30
+14,5,payout,25
+15,5,refund,65
