@@ -1,0 +1,4 @@
+rebilling_id,subscription_id,rebilled_at
+1,1,2020-02-01
+2,1,2020-03-01
+3,3,2020-02-01

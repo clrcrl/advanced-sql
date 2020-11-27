@@ -1,0 +1,4 @@
+change_id,subscription_id,price,changed_at
+1,1,50,2020-01-10
+2,1,60,2020-01-15
+3,2,40,2020-01-12
