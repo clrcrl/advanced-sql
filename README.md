@@ -3,7 +3,7 @@
 
 ## Contents:
 - [Subscription price changes](#subscription-price-changes)
-- [Apportioning payments](#apportipning-payments)
+- [Apportioning payments](#apportioning-payments)
 
 ## Subscription price changes
 
@@ -98,7 +98,7 @@ And for accounting purposes it needs to looks like this:
 
 | task_id | inbound_payment_id | inbound_amount | payout_amount   | refund_amount |
 |---------|--------------------|----------------|-----------------|---------------|
-| 2       | 3                  | 30             | 0               | 30            |
+| 2       | 3                  | 0              | 30              | 30            |
 
 Also seems do-able.
 
@@ -145,7 +145,7 @@ And for accounting purposes it looks like this:
 | 5       | 13                 | 30             | 0               | 30            |
 
 
-_Y I K E S_, that `task_id = 5` is particularly nasty — there's _three_ inbound payments, and we need to split the payout payment across the first two inbound payments, and then split the refund across the second and third payments.
+_Y I K E S_, that `task_id = 5` is particularly nasty — there's _three_ inbound payments, and we need to split the payout payment across the first two inbound payments, and then split the refund across the second and third payments. And no, apparently we can't apportion them according to their ratios — we instead need to first fully "refund" the first inbound payment (`inbound_payment_id = 11`), and then partially refund the second inbound payment (`inbound_payment_id = 12)`).
 
 ## Exercise
 1. Write the SQL to transform the ledger of payments into the format required by accounting. Use the following BigQuery tables, or load the CSVs in [apportioning-payments](/apportioning-payments) into the warehouse of your choice:
