@@ -4,6 +4,7 @@
 ## Contents:
 - [Subscription price changes](#subscription-price-changes)
 - [Apportioning payments](#apportioning-payments)
+- [TV traffic spikes](#tv-traffic-spikes)
 
 ## Subscription price changes
 
@@ -165,3 +166,76 @@ select * from `advanced-sql-challenges`.`apportioning_payments`.`inbound_payment
 
 
 ¹Perhaps their accounting problems are the least of their woes since currently the business does not capture any fees.
+
+
+## TV Traffic spikes
+
+A flying mattress company has decided to advertise on TV.
+
+They want to correlate spikes in TV traffic with the times of their ads. According to some marketing lore, a website traffic spike is defined as:
+- An increase in traffic that exceeds a baseline by > 2 standard deviations, where the baseline is calculated based on the previous 10 minutes.
+- During a spike, the baseline should be held at the value of when the spike started.
+- A spike ends once the traffic is back within 2 standard deviations of the baseline that the spike started at.
+
+A spike is attributed to TV when:
+- An ad spot occurred in the 3 minutes preceding the start of the spike
+
+The company's analyst has already cleaned up the data in this format:
+
+```sql
+select * from `advanced-sql-challenges`.`spike_modeling`.`website_traffic`
+```
+
+| minute           | ad_occurred | active_sessions |
+|------------------|-------------|-----------------|
+| 2020-11-28 15:00 | FALSE       | 10              |
+| 2020-11-28 15:01 | FALSE       | 10              |
+| 2020-11-28 15:02 | FALSE       | 9               |
+| 2020-11-28 15:03 | FALSE       | 7               |
+| 2020-11-28 15:04 | FALSE       | 9               |
+| 2020-11-28 15:05 | FALSE       | 11              |
+| 2020-11-28 15:06 | FALSE       | 12              |
+| 2020-11-28 15:07 | FALSE       | 10              |
+| 2020-11-28 15:08 | FALSE       | 9               |
+| 2020-11-28 15:09 | FALSE       | 10              |
+| 2020-11-28 15:10 | TRUE        | 11              |
+| 2020-11-28 15:11 | FALSE       | 20              |
+| 2020-11-28 15:12 | FALSE       | 40              |
+| 2020-11-28 15:13 | FALSE       | 45              |
+| 2020-11-28 15:14 | FALSE       | 50              |
+| 2020-11-28 15:15 | FALSE       | 45              |
+| 2020-11-28 15:16 | FALSE       | 40              |
+| 2020-11-28 15:17 | FALSE       | 20              |
+| 2020-11-28 15:18 | FALSE       | 10              |
+| 2020-11-28 15:19 | FALSE       | 11              |
+| 2020-11-28 15:20 | FALSE       | 12              |
+
+
+Here's the output you need to be able to generate:
+
+| minute           | ad_occurred | active_sessions | is_tv_spike | tv_uplift |
+|------------------|-------------|-----------------|-------------|-----------|
+| 2020-11-28 15:00 | FALSE       | 10              | FALSE       | 0.00%     |
+| 2020-11-28 15:01 | FALSE       | 10              | FALSE       | 0.00%     |
+| 2020-11-28 15:02 | FALSE       | 9               | FALSE       | 0.00%     |
+| 2020-11-28 15:03 | FALSE       | 7               | FALSE       | 0.00%     |
+| 2020-11-28 15:04 | FALSE       | 9               | FALSE       | 0.00%     |
+| 2020-11-28 15:05 | FALSE       | 11              | FALSE       | 0.00%     |
+| 2020-11-28 15:06 | FALSE       | 12              | FALSE       | 0.00%     |
+| 2020-11-28 15:07 | FALSE       | 10              | FALSE       | 0.00%     |
+| 2020-11-28 15:08 | FALSE       | 9               | FALSE       | 0.00%     |
+| 2020-11-28 15:09 | FALSE       | 10              | FALSE       | 0.00%     |
+| 2020-11-28 15:10 | TRUE        | 11              | FALSE       | 0.00%     |
+| 2020-11-28 15:11 | FALSE       | 20              | TRUE        | 158.77%   |
+| 2020-11-28 15:12 | FALSE       | 40              | TRUE        | 317.54%   |
+| 2020-11-28 15:13 | FALSE       | 45              | TRUE        | 357.23%   |
+| 2020-11-28 15:14 | FALSE       | 50              | TRUE        | 396.93%   |
+| 2020-11-28 15:15 | FALSE       | 45              | TRUE        | 357.23%   |
+| 2020-11-28 15:16 | FALSE       | 40              | TRUE        | 317.54%   |
+| 2020-11-28 15:17 | FALSE       | 20              | TRUE        | 158.77%   |
+| 2020-11-28 15:18 | FALSE       | 10              | FALSE       | 0.00%     |
+| 2020-11-28 15:19 | FALSE       | 11              | FALSE       | 0.00%     |
+| 2020-11-28 15:20 | FALSE       | 12              | FALSE       | 0.00%     |
+
+
+Note: the intermediate table has also been included as a reference
