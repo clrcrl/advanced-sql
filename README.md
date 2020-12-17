@@ -45,7 +45,7 @@ select * from `advanced-sql-challenges`.`subscription_price_changes`.`effective_
 
 | subscription_id | new_price | changed_at | effective_at |
 |-----------------|-----------|------------|--------------|
-| 1               | 60        | 2020-02-15 | 2020-02-01   |
+| 1               | 60        | 2020-01-15 | 2020-02-01   |
 
 
 Things worth noting in the final table.
