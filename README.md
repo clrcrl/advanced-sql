@@ -98,7 +98,7 @@ And for accounting purposes it needs to looks like this:
 
 | task_id | inbound_payment_id | inbound_amount | payout_amount   | refund_amount |
 |---------|--------------------|----------------|-----------------|---------------|
-| 2       | 3                  | 0              | 30              | 30            |
+| 2       | 3                  | 30             | 0               | 30            |
 
 Also seems do-able.
 
